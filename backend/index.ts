@@ -13,13 +13,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-const admin = require("firebase-admin");
 
-const serviceAccount = require("../standinbackend/serviceAccount.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
 connectDB();
 
 app.listen(PORT, () => {
