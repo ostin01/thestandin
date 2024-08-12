@@ -23,5 +23,3 @@ app.listen(PORT, () => {
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello world");
 });
-
-app.use("/api/users", require("./routes/userRoutes"));
