@@ -5,13 +5,17 @@ const app = express();
 import dotenv from "dotenv";
 
 import connectDB from "./config/DB";
+
 import cookieParser = require("cookie-parser");
 
 dotenv.config();
 
 const PORT = process.env.PORT;
+
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 
 connectDB();

@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import generateToken from "../lib/generateToken";
 
 export async function signup(req: Request, res: Response) {
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -17,15 +17,17 @@ export async function signup(req: Request, res: Response) {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
     });
     if (user) {
-      generateToken(user._id as unknown as string, res);
+      generateToken(user._id.toString(), res);
       return res.status(201).json({
         _id: user._id,
-        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         password: user.password,
       });
     } else {
@@ -50,9 +52,10 @@ export async function login(req: Request, res: Response) {
 
     res.status(200).json({
       id: user._id,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
-      token: generateToken(user._id as unknown as string, res),
+      token: generateToken(user._id.toString(), res),
     });
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
@@ -61,7 +64,7 @@ export async function login(req: Request, res: Response) {
 
 export async function logoutUser(req: Request, res: Response) {
   try {
-    res.cookie("jwt", "", { maxAge: 1 });
+    res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
