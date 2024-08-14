@@ -23,3 +23,5 @@ app.listen(PORT, () => {
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello world");
 });
+
+app.use("/api/auth/", require("./routes/userRoutes"));

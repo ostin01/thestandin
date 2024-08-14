@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    name: { type: String, require: true },
     email: {
       type: String,
       require: [true, "please add an Email"],
@@ -13,15 +14,15 @@ const userSchema = new mongoose.Schema(
       minLength: 6,
     },
 
-    uid: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+    // uid: {
+    //   type: String,
+    //   required: true,
+    //   unique: true,
+    // },
   },
   {
     timestamps: true,
   }
 );
 
-export default mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);
