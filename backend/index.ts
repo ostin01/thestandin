@@ -29,3 +29,4 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth/", require("./routes/userRoutes"));
+app.use("/api/messages/", require("./routes/messageRoutes"));
