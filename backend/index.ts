@@ -1,12 +1,12 @@
 import express, { Request, Response } from "express";
 
-const app = express();
-
 import dotenv from "dotenv";
 
 import connectDB from "./config/DB";
 
 import cookieParser = require("cookie-parser");
+
+import { app, server } from "./socket/socket";
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 connectDB();
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`app listening on ${PORT}`);
 });
 
