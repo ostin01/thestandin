@@ -1,7 +1,9 @@
+import Navbar from "./component/landingpage/navbar";
+
 export default function Home() {
   return (
     <div>
-      <h1>Hello world</h1>
+      <Navbar />
     </div>
   );
 }
