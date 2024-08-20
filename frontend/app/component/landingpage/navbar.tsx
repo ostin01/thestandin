@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 export default function Navbar() {
   return (
     <section>
-      <h1>Navbar</h1>
+      <Link href="/signup">Sign up</Link>
     </section>
   );
 }

@@ -20,9 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <MantineProvider>
-          {/* <ReactQueryProvider> */}
-          {children}
-          {/* </ReactQueryProvider> */}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
         </MantineProvider>
       </body>
     </html>
