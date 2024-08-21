@@ -1,23 +1,76 @@
 "use client";
-import { PasswordInput, TextInput } from "@mantine/core";
+import { Button, PasswordInput, TextInput } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 export default function SignupForm() {
+  //   const { data } = useQuery<any>({
+  //     queryKey: ["todos"],
+  //     queryFn: () =>
+  //       fetch("https://jsonplaceholder.typicode.com/todos").then((res) =>
+  //         res.json()
+  //       ),
+  //   });
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    console.log("Hello world");
+  }
   return (
-    <form>
-      <TextInput label="First Name" placeholder="Enter First Name" />
-      <TextInput label="Last Name" placeholder="Enter Last Name" />
-      <TextInput label="Email" placeholder="Enter your email" />
-      <PasswordInput label="Enter your password" />
-      {/* <div className="flex justify-center items-center">
-            <Button className="!bg-black !mt-4 !py-1">Sign up</Button>
-          </div> */}
-      <Link
-        href="/homepage"
-        className=" w-[50px] h-[20px] bg-blue-500 text-white text-center rounded-lg py-4 px-8"
+    <form onSubmit={handleSubmit}>
+      <TextInput
+        label="First Name"
+        placeholder="Enter First Name"
+        withAsterisk
+        className="mt-[20px]"
+        classNames={{
+          input:
+            "outline-none border border-grey w-full h-[44px] rounded-lg px-4",
+        }}
+      />
+      <TextInput
+        label="Last Name"
+        placeholder="Enter Last Name"
+        withAsterisk
+        className="mt-[20px]"
+        classNames={{
+          input:
+            "outline-none border border-grey w-full h-[44px] rounded-lg px-4 ",
+        }}
+      />
+      <TextInput
+        label="Email"
+        placeholder="Enter your email"
+        withAsterisk
+        className="mt-[20px]"
+        classNames={{
+          input:
+            "outline-none border border-grey w-full h-[44px] rounded-lg px-4",
+        }}
+      />
+      <PasswordInput
+        label="Enter your password"
+        withAsterisk
+        className="mt-[20px]"
+        classNames={{
+          input:
+            "outline-none border border-grey w-full h-[44px] rounded-lg px-4",
+        }}
+      />
+
+      <Button
+        type="submit"
+        className="bg-black text-white w-full rounded-lg py-4 mb-4"
       >
-        sign up
-      </Link>
+        Submit
+      </Button>
+
+      <h2>
+        Already have an account ?{" "}
+        <Link href="/sign-in" className="text-blue-600">
+          Log in
+        </Link>
+      </h2>
     </form>
   );
 }
