@@ -1,0 +1,39 @@
+.label {
+  font-weight: 300;
+  font-size: 16px;
+  color: #061722;
+}
+
+.input {
+  padding: 20px 22px;
+  background: #f6f8f6;
+  height: 46px;
+  border: none;
+  border-radius: 8px;
+
+  &::placeholder {
+    font-weight: 400;
+    font-size: 16px;
+  }
+  &:focus-within {
+    border-color: transparent;
+  }
+}
+
+.button {
+  background-color: black;
+  height: 50px;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 16px;
+  &:disabled,
+  &[data-disabled] {
+    opacity: 0.5;
+    color: white;
+  }
+  &:hover {
+    background: black;
+  }
+}
