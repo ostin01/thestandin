@@ -1,28 +1,19 @@
 "use client";
 import { Button, PasswordInput, TextInput } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 export default function SignupForm() {
-  //   const { data } = useQuery<any>({
-  //     queryKey: ["todos"],
-  //     queryFn: () =>
-  //       fetch("https://jsonplaceholder.typicode.com/todos").then((res) =>
-  //         res.json()
-  //       ),
-  //   });
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     console.log("Hello world");
   }
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput
+      {/* <TextInput
         label="First Name"
         placeholder="Enter First Name"
         withAsterisk
-        className="mt-[20px]"
+        className="mt-4"
         classNames={{
           input:
             "outline-none border border-grey w-full h-[44px] rounded-lg px-4",
@@ -32,17 +23,43 @@ export default function SignupForm() {
         label="Last Name"
         placeholder="Enter Last Name"
         withAsterisk
-        className="mt-[20px]"
+        className="mt-4"
         classNames={{
           input:
             "outline-none border border-grey w-full h-[44px] rounded-lg px-4 ",
         }}
-      />
+      /> */}
+      <div className="grid md:grid-cols-2 gap-6 mt-[32px]">
+        <TextInput
+          labelProps={{ className: "" }}
+          label="First name"
+          placeholder="First name"
+          size="lg"
+          withAsterisk
+          className="mt-4"
+          classNames={{
+            input:
+              "outline-none border border-grey w-full h-[44px] rounded-lg px-4 ",
+          }}
+        />
+        <TextInput
+          labelProps={{ className: "text-shade-01 font-light" }}
+          label="Last name"
+          placeholder="Last name"
+          size="lg"
+          withAsterisk
+          className="mt-4"
+          classNames={{
+            input:
+              "outline-none border border-grey w-full h-[44px] rounded-lg px-4 ",
+          }}
+        />
+      </div>
       <TextInput
         label="Email"
         placeholder="Enter your email"
         withAsterisk
-        className="mt-[20px]"
+        className="mt-4"
         classNames={{
           input:
             "outline-none border border-grey w-full h-[44px] rounded-lg px-4",
@@ -51,10 +68,21 @@ export default function SignupForm() {
       <PasswordInput
         label="Enter your password"
         withAsterisk
-        className="mt-[20px]"
+        className="mt-4"
+        placeholder="Password"
         classNames={{
-          input:
-            "outline-none border border-grey w-full h-[44px] rounded-lg px-4",
+          input: "outline-none border border-grey rounded-lg px-4",
+          innerInput: "outline-none w-full h-[44px]",
+        }}
+      />
+
+      <PasswordInput
+        label="Confirm password"
+        withAsterisk
+        placeholder="Password"
+        classNames={{
+          input: "outline-none border border-grey rounded-lg px-4",
+          innerInput: "outline-none w-full h-[44px]",
         }}
       />
 
