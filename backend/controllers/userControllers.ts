@@ -23,12 +23,10 @@ export async function signup(req: Request, res: Response) {
       password: hashedPassword,
     });
     if (user) {
-      generateToken(user._id.toString(), res);
       return res.status(201).json({
-        _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
-        password: user.password,
+        token: generateToken(user._id.toString(), res),
       });
     } else {
       return res.status(400).json({ mssg: "Invalid user data" });
