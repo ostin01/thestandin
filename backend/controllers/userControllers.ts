@@ -25,10 +25,10 @@ export async function signup(req: Request, res: Response) {
     if (user) {
       generateToken(user._id.toString(), res);
       return res.status(201).json({
+        message: "sign up successfully!",
         _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
-        password: user.password,
       });
     } else {
       return res.status(400).json({ mssg: "Invalid user data" });
@@ -51,10 +51,9 @@ export async function login(req: Request, res: Response) {
       return res.status(400).json({ message: "Invalid login credentials" });
 
     res.status(200).json({
-      id: user._id,
+      message: "sign up successfully!",
       firstName: user.firstName,
       lastName: user.lastName,
-      email: user.email,
       token: generateToken(user._id.toString(), res),
     });
   } catch (error) {
