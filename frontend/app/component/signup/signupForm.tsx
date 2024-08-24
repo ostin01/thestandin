@@ -1,10 +1,11 @@
 "use client";
-import { Button, PasswordInput, TextInput } from "@mantine/core";
-import Link from "next/link";
+import { Button, Notification, PasswordInput, TextInput } from "@mantine/core";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import styles from "@/app/styles/inputstyles.module.css";
-import { useSignup } from "@/app/api/hooks/authenticaiton";
+import { useSignup } from "@/api/hooks/authentication";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const userDetailsFormValidator = z
   .object({
@@ -27,7 +28,23 @@ export type UserDetailsFormValidator = Omit<
   "confirmPassword"
 >;
 export default function SignupForm() {
-  const { mutate: signup } = useSignup();
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
+  function handleError(message: string) {
+    setErrorMessage(message);
+  }
+
+  function handleSuccess() {
+    setSuccess(true);
+    setTimeout(() => {
+      router.push("/onboarding");
+    }, 2000);
+  }
+  const { mutate: signup, isPending: signupLoading } = useSignup({
+    successCallbBack: handleSuccess,
+    errorCallback: handleError,
+  });
   const userDetailsForm = useForm({
     initialValues: {
       firstName: "",
@@ -45,7 +62,7 @@ export default function SignupForm() {
 
   return (
     <form onSubmit={userDetailsForm.onSubmit(handleSubmit)}>
-      <div className="grid md:grid-cols-2 gap-6 mt-[32px]">
+      <div className="grid md:grid-cols-2 gap-6 mt-4">
         <TextInput
           label="First name"
           placeholder="First name"
@@ -69,6 +86,7 @@ export default function SignupForm() {
         label="Email"
         placeholder="Enter your email"
         withAsterisk
+        size="lg"
         className="mt-4"
         classNames={styles}
         {...userDetailsForm.getInputProps("email")}
@@ -76,6 +94,7 @@ export default function SignupForm() {
       <PasswordInput
         label="Enter your password"
         withAsterisk
+        size="lg"
         className="mt-4"
         placeholder="Password"
         classNames={styles}
@@ -85,22 +104,27 @@ export default function SignupForm() {
       <PasswordInput
         label="Confirm password"
         withAsterisk
+        size="lg"
         className="my-4"
         placeholder="Password"
         classNames={styles}
         {...userDetailsForm.getInputProps("confirmPassword")}
       />
 
-      <Button type="submit" className={styles.button}>
+      <Button type="submit" className={styles.button} loading={signupLoading}>
         Submit
       </Button>
 
-      <h2>
-        Already have an account ?{" "}
-        <Link href="/sign-in" className="text-blue-600">
-          Log in
-        </Link>
-      </h2>
+      {success && (
+        <Notification color="green" mt="xl">
+          Account created successfully
+        </Notification>
+      )}
+      {errorMessage && (
+        <Notification color="red" mt="xl" onClose={() => setErrorMessage("")}>
+          {errorMessage}
+        </Notification>
+      )}
     </form>
   );
 }

@@ -26,9 +26,6 @@ export async function signup(req: Request, res: Response) {
       generateToken(user._id.toString(), res);
       return res.status(201).json({
         message: "sign up successfully!",
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
       });
     } else {
       return res.status(400).json({ mssg: "Invalid user data" });
@@ -52,12 +49,28 @@ export async function login(req: Request, res: Response) {
 
     res.status(200).json({
       message: "sign up successfully!",
-      firstName: user.firstName,
-      lastName: user.lastName,
+      id: user._id,
       token: generateToken(user._id.toString(), res),
     });
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
+  }
+}
+
+export async function getLoggedinUser(req: Request, res: Response) {
+  try {
+    const userId = (req as any).user;
+
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 }
 
