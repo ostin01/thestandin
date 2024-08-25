@@ -14,6 +14,7 @@ export const loginFormValidator = z.object({
 
 export default function SigninForm() {
   const [responseMessage, setResponseMessage] = useState("");
+  console.log(responseMessage);
   const router = useRouter();
   const { mutate: login, isPending: signin } = useLogin({
     successCallbBack: handleSuccess,
@@ -27,7 +28,8 @@ export default function SigninForm() {
     validate: zodResolver(loginFormValidator),
   });
 
-  function handleSuccess() {
+  function handleSuccess(message: string) {
+    setResponseMessage(message);
     setTimeout(() => {
       router.push("/onboarding");
     }, 2000);

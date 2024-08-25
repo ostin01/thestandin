@@ -28,7 +28,7 @@ export function useLogin({
   successCallbBack,
   errorCallback,
 }: {
-  successCallbBack: () => void;
+  successCallbBack: (message: string) => void;
   errorCallback: (message: string) => void;
 }) {
   return useMutation({
@@ -38,7 +38,7 @@ export function useLogin({
     onSuccess: function (data: AxiosResponse<ApiResponse<unknown>>) {
       const accessToken = data.data.token;
       Cookies.set(APP_TOKENS.AUTH_TOKEN, accessToken);
-      successCallbBack();
+      successCallbBack(data.data.message);
     },
     onError: function ({ response }: AxiosError<ApiResponse<unknown>>) {
       console.log(response?.data.error);
