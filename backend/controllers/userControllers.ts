@@ -48,7 +48,7 @@ export async function login(req: Request, res: Response) {
       return res.status(400).json({ message: "Invalid login credentials" });
 
     res.status(200).json({
-      message: "sign up successfully!",
+      message: "Logged in successful !",
       id: user._id,
       token: generateToken(user._id.toString(), res),
     });

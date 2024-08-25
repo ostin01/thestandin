@@ -1,3 +1,3 @@
 export const APP_TOKENS = {
-  AUTH_TOKEN: "thstandin_accessToken",
+  AUTH_TOKEN: "thestandin_accessToken",
 } as const;
