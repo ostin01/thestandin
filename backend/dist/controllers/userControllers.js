@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signup = signup;
 exports.login = login;
+exports.getLoggedinUser = getLoggedinUser;
 exports.logoutUser = logoutUser;
 const userModels_1 = require("../models/userModels");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
@@ -37,10 +38,7 @@ function signup(req, res) {
             if (user) {
                 (0, generateToken_1.default)(user._id.toString(), res);
                 return res.status(201).json({
-                    _id: user._id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    password: user.password,
+                    message: "sign up successfully!",
                 });
             }
             else {
@@ -61,15 +59,29 @@ function login(req, res) {
             if (!user || !isPasswordCorrect)
                 return res.status(400).json({ message: "Invalid login credentials" });
             res.status(200).json({
+                message: "sign up successfully!",
                 id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
                 token: (0, generateToken_1.default)(user._id.toString(), res),
             });
         }
         catch (error) {
             res.status(500).json({ message: error.message });
+        }
+    });
+}
+function getLoggedinUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const userId = req.user;
+            const user = yield userModels_1.User.findById(userId).select("-password");
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            return res.status(200).json(user);
+        }
+        catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Internal server error" });
         }
     });
 }
