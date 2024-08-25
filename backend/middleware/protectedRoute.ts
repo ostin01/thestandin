@@ -8,7 +8,7 @@ export default async function protectedRoute(
   next: NextFunction
 ) {
   try {
-    const token = req.cookies.jwt;
+    const token = req.cookies.jwt || req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res
         .status(401)
