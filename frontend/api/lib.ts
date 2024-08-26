@@ -20,3 +20,33 @@ export async function _getLoggedInUser() {
 
   return res.json();
 }
+
+export async function _getMessageParticipants() {
+  const auth_token = getSession();
+  const res = await fetch(`${BASE_URL}/api/users`, {
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${auth_token?.value}`,
+    },
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+  return res.json();
+}
+
+export async function _getMessages() {
+  const auth_token = getSession();
+  const res = await fetch(`${BASE_URL}/api/messages/66bca9e74b4144d8675d5f50`, {
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${auth_token?.value}`,
+    },
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+  return res.json();
+}
