@@ -41,8 +41,7 @@ export function useLogin({
       successCallbBack(data.data.message);
     },
     onError: function ({ response }: AxiosError<ApiResponse<unknown>>) {
-      console.log(response?.data.error);
-      errorCallback(response?.data.error as string);
+      errorCallback(response?.data.message as string);
     },
   });
 }

@@ -9,12 +9,12 @@ import { useState } from "react";
 
 export const loginFormValidator = z.object({
   email: z.string().email("Enter valid email"),
-  password: z.string().min(8, "Password should contain at least 8 characters"),
+  password: z.string().min(3, "Password should contain at least 8 characters"),
 });
 
 export default function SigninForm() {
+  const [successMessage, setSuccessMessage] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
-  console.log(responseMessage);
   const router = useRouter();
   const { mutate: login, isPending: signin } = useLogin({
     successCallbBack: handleSuccess,
@@ -29,7 +29,7 @@ export default function SigninForm() {
   });
 
   function handleSuccess(message: string) {
-    setResponseMessage(message);
+    setSuccessMessage(message);
     setTimeout(() => {
       router.push("/onboarding");
     }, 2000);
@@ -68,6 +68,12 @@ export default function SigninForm() {
       <Button type="submit" className={styles.button} mt={20} loading={signin}>
         Submit
       </Button>
+
+      {successMessage && (
+        <Notification color="green" withCloseButton={false}>
+          {responseMessage}
+        </Notification>
+      )}
 
       {responseMessage && (
         <Notification color="red" withCloseButton={false}>

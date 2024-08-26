@@ -23,9 +23,9 @@ export async function signup(req: Request, res: Response) {
       password: hashedPassword,
     });
     if (user) {
-      generateToken(user._id.toString(), res);
       return res.status(201).json({
-        message: "sign up successfully!",
+        message: "signed up successfully !",
+        token: generateToken(user._id.toString(), res),
       });
     } else {
       return res.status(400).json({ mssg: "Invalid user data" });
@@ -48,7 +48,7 @@ export async function login(req: Request, res: Response) {
       return res.status(400).json({ message: "Invalid login credentials" });
 
     res.status(200).json({
-      message: "Logged in successful !",
+      message: "Logged in successfully !",
       id: user._id,
       token: generateToken(user._id.toString(), res),
     });
@@ -77,7 +77,7 @@ export async function getLoggedinUser(req: Request, res: Response) {
 export async function logoutUser(req: Request, res: Response) {
   try {
     res.cookie("jwt", "", { maxAge: 0 });
-    res.status(200).json({ message: "User logged out successfully" });
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
   }
