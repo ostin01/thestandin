@@ -21,7 +21,7 @@ export async function _getLoggedInUser() {
   return res.json();
 }
 
-export async function _getMessageParticipants() {
+export async function _getAllUsers() {
   const auth_token = getSession();
   const res = await fetch(`${BASE_URL}/api/users`, {
     cache: "no-store",
@@ -36,9 +36,23 @@ export async function _getMessageParticipants() {
   return res.json();
 }
 
-export async function _getMessages() {
+export async function _getConversationParticipants() {
   const auth_token = getSession();
-  const res = await fetch(`${BASE_URL}/api/messages/66bca9e74b4144d8675d5f50`, {
+  const res = await fetch(`${BASE_URL}/api/users/get-conversation`, {
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${auth_token?.value}`,
+    },
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+  return res.json();
+}
+export async function _getMessages(id: string) {
+  const auth_token = getSession();
+  const res = await fetch(`${BASE_URL}/api/messages/${id}`, {
     cache: "no-store",
     headers: {
       Authorization: `Bearer ${auth_token?.value}`,

@@ -17,7 +17,11 @@ export function useSignup({
     mutationFn: function (payload: UserDetailsFormValidator) {
       return axiosInstance.post("/api/auth/signup", payload);
     },
-    onSuccess: () => successCallbBack(),
+    onSuccess: function (data: AxiosResponse<ApiResponse<unknown>>) {
+      const accessToken = data.data.token;
+      Cookies.set(APP_TOKENS.AUTH_TOKEN, accessToken);
+      successCallbBack();
+    },
     onError: function ({ response }: AxiosError<ApiResponse<unknown>>) {
       errorCallback(response?.data.error as string);
     },

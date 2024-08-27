@@ -4,7 +4,6 @@ import styles from "@/app/styles/inputstyles.module.css";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import { useLogin } from "@/api/hooks/authentication";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export const loginFormValidator = z.object({
@@ -15,7 +14,6 @@ export const loginFormValidator = z.object({
 export default function SigninForm() {
   const [successMessage, setSuccessMessage] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
-  const router = useRouter();
   const { mutate: login, isPending: signin } = useLogin({
     successCallbBack: handleSuccess,
     errorCallback: handleError,
@@ -31,7 +29,7 @@ export default function SigninForm() {
   function handleSuccess(message: string) {
     setSuccessMessage(message);
     setTimeout(() => {
-      router.push("/onboarding");
+      location.pathname = "/";
     }, 2000);
   }
 
@@ -71,7 +69,7 @@ export default function SigninForm() {
 
       {successMessage && (
         <Notification color="green" withCloseButton={false}>
-          {responseMessage}
+          {successMessage}
         </Notification>
       )}
 
