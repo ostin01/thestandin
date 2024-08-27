@@ -5,7 +5,6 @@ import { useForm, zodResolver } from "@mantine/form";
 import styles from "@/app/styles/inputstyles.module.css";
 import { useSignup } from "@/api/hooks/authentication";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export const userDetailsFormValidator = z
   .object({
@@ -30,7 +29,6 @@ export type UserDetailsFormValidator = Omit<
 export default function SignupForm() {
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const router = useRouter();
   function handleError(message: string) {
     setErrorMessage(message);
   }
@@ -38,7 +36,7 @@ export default function SignupForm() {
   function handleSuccess() {
     setSuccess(true);
     setTimeout(() => {
-      router.push("/onboarding");
+      location.pathname = "/";
     }, 2000);
   }
   const { mutate: signup, isPending: signupLoading } = useSignup({
