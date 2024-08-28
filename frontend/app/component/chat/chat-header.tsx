@@ -6,15 +6,14 @@ export default async function ChatHeader({ messgParticipants }: any) {
   const lastMessage = messages.at(-1);
 
   return (
-    <Link href={`/messages/${messgParticipants._id}`}>
-      <div className="mx-auto w-fit flex md:items-center gap-2 mt-4 pb-4 border-b">
-        <div className="">
-          <div className="w-[50px] h-[50px] rounded-full bg-gray-500"></div>
-        </div>
-
+    <Link href={`/home/${messgParticipants._id}`}>
+      <div className="flex items-center gap-2 mt-4 pb-4 border-b">
         <div>
-          <h2>{messgParticipants.firstName}</h2>
-          <span className="truncate block w-[250px]">
+          <div className="bg-gray-600 rounded-full w-[50px] h-[50px]"></div>
+        </div>
+        <div>
+          <h1 className="font-bold">{messgParticipants.firstName}</h1>
+          <span className="text-sm opacity-70 truncate block w-[250px]">
             {lastMessage.message}
           </span>
         </div>
