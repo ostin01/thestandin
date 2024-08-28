@@ -3,6 +3,7 @@ import {
   _getLoggedInUser,
   _getMessages,
 } from "@/api/lib";
+import MessageBox from "@/app/component/chat/message-box";
 import { Call, Setting, Video } from "iconsax-react";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -55,6 +56,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           )
         )}
       </div>
+      <MessageBox />
     </div>
   );
 }
