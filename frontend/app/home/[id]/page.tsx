@@ -1,3 +1,4 @@
+import { useSendMessage } from "@/api/hooks/message";
 import {
   _getConversationParticipants,
   _getLoggedInUser,
@@ -12,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const person = conversation.find((p: any) => p._id === params.id);
 
   return (
-    <div className="bg-white w-full m-4 rounded-lg p-4">
+    <div className="bg-white w-full m-4 rounded-lg p-4 relative">
       <div className="flex justify-between items-center border-b pb-2 mb-4">
         <div className="flex items-center gap-2">
           <div>
@@ -56,7 +57,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           )
         )}
       </div>
-      <MessageBox />
+      <MessageBox id={params.id} />
     </div>
   );
 }
