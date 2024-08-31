@@ -1,4 +1,3 @@
-import { useSendMessage } from "@/api/hooks/message";
 import {
   _getConversationParticipants,
   _getLoggedInUser,
@@ -6,11 +5,17 @@ import {
 } from "@/api/lib";
 import MessageBox from "@/app/component/chat/message-box";
 import { Call, Setting, Video } from "iconsax-react";
+import { useEffect, useRef } from "react";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const messages = await _getMessages(params.id);
   const conversation = await _getConversationParticipants();
   const person = conversation.find((p: any) => p._id === params.id);
+  // const lastMessageRef: any = useRef();
+
+  // useEffect(() => {
+  //   lastMessageRef.current?.scrollIntoView({ behaviour: "smooth" });
+  // }, []);
 
   return (
     <div className="bg-white w-full m-4 rounded-lg p-4 relative">
@@ -31,7 +36,10 @@ export default async function Page({ params }: { params: { id: string } }) {
           <Setting />
         </div>
       </div>
-      <div>
+      <div
+        className="overflow-y-scroll"
+        style={{ height: `calc(100% - 110px)` }}
+      >
         {messages.map((message: any) =>
           message.senderId !== params.id ? (
             <div

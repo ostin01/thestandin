@@ -8,6 +8,7 @@ import { z } from "zod";
 export const messageValidaor = z.object({
   text: z.string(),
 });
+
 export default function MessageBox({ id }: { id: string }) {
   const messageInput = useForm({
     initialValues: {
@@ -15,7 +16,6 @@ export default function MessageBox({ id }: { id: string }) {
     },
     validate: zodResolver(messageValidaor),
   });
-  // const {sendmessage} = useSendMessage(id)
 
   const { mutate: sendText } = useSendMessage(id);
 
@@ -26,7 +26,7 @@ export default function MessageBox({ id }: { id: string }) {
   }
   return (
     <form
-      className="flex items-center justify-between gap-1 mt-4 ml-4 mr-2 absolute left-0 right-0 bottom-8"
+      className="flex items-center justify-between gap-1 mt-4 ml-4 mr-2 absolute left-0 right-0 bottom-2"
       onSubmit={handleSubmitMessage}
     >
       <div className="flex-grow">
