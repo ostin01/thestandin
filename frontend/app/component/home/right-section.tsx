@@ -9,7 +9,7 @@ export default async function RightSection() {
 
   return (
     <div className="flex my-4 ml-4">
-      <div className="bg-white w-[100px] py-4 rounded-lg flex flex-col items-center">
+      <div className="hidden bg-white w-[100px] py-4 rounded-lg md:flex flex-col items-center">
         <div className="bg-gray-600 rounded-full w-[50px] h-[50px]"></div>
       </div>
       <div className="mx-4">
