@@ -12,7 +12,7 @@ export default async function RightSection() {
       <div className="hidden bg-white w-[100px] py-4 rounded-lg md:flex flex-col items-center">
         <div className="bg-gray-600 rounded-full w-[50px] h-[50px]"></div>
       </div>
-      <div className="mx-4">
+      <div className="md:mx-4">
         <Input
           placeholder="search"
           classNames={styles}
