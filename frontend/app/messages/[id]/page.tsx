@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const conversation = await _getConversationParticipants();
   const person = conversation.find((p: any) => p._id === params.id);
   return (
-    <div className="bg-white w-full m-4 rounded-lg p-4 relative h-screen">
+    <div className="bg-white w-full rounded-lg p-4 relative h-screen">
       <UserMessageHeader person={person} />
       <div
         className="overflow-y-scroll"

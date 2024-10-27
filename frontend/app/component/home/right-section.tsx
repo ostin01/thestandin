@@ -19,7 +19,7 @@ export default async function RightSection() {
           leftSection={<SearchNormal />}
         />
 
-        <div className="bg-white w-[300px] rounded-lg mt-6 p-4 shadow-sm">
+        <div className="bg-white w-full md:w-[300px] rounded-lg mt-6 p-4 shadow-sm">
           <h1 className="font-semibold text-[32px] mb-4">Chats</h1>
 
           {conversation.map((messgParticipants: any) => (
