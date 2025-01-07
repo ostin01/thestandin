@@ -1,4 +1,3 @@
-import { Image } from "@mantine/core";
 import SignupForm from "../../component/signup/signupForm";
 import Link from "next/link";
 
@@ -6,7 +5,7 @@ export default function Page() {
   return (
     <div className="flex flex-col md:flex-row p-4 md:p-0 h-screen">
       <div className="hidden md:block w-1/2">
-        <Image
+        <img
           src="https://img.freepik.com/premium-photo/photo-group-people-friends-are-sitting-dancing-laughing-around-table-with-light_763111-205483.jpg"
           alt=""
           className="w-full h-full object-cover"

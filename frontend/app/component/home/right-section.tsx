@@ -1,4 +1,3 @@
-import { Input } from "@mantine/core";
 import { SearchNormal } from "iconsax-react";
 import styles from "@/app/styles/inputstyles.module.css";
 import ChatHeader from "../chat/chat-header";
@@ -13,11 +12,11 @@ export default async function RightSection() {
         <div className="bg-gray-600 rounded-full w-[50px] h-[50px]"></div>
       </div>
       <div className="md:mx-4">
-        <Input
+        {/* <Input
           placeholder="search"
           classNames={styles}
           leftSection={<SearchNormal />}
-        />
+        /> */}
 
         <div className="bg-white w-full md:w-[300px] rounded-lg mt-6 p-4 shadow-sm">
           <h1 className="font-semibold text-[32px] mb-4">Chats</h1>

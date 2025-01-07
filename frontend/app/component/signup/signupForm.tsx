@@ -1,5 +1,4 @@
 "use client";
-import { Notification } from "@mantine/core";
 import { z } from "zod";
 import styles from "@/app/styles/inputstyles.module.css";
 import { useSignup } from "@/api/hooks/authentication";
@@ -155,15 +154,9 @@ export default function SignupForm() {
         </div>
 
         {success && (
-          <Notification color="green" mt="xl">
-            Account created successfully
-          </Notification>
+          <span className="text-green-600">Account created successfully</span>
         )}
-        {errorMessage && (
-          <Notification color="red" mt="xl" onClose={() => setErrorMessage("")}>
-            {errorMessage}
-          </Notification>
-        )}
+        {errorMessage && <span className="text-red-600">{errorMessage}</span>}
       </div>
     </form>
   );

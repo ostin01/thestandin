@@ -1,7 +1,7 @@
 "use client";
 import { useSendMessage } from "@/api/hooks/message";
-import { Input } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+// import { Input } from "@mantine/core";
+// import { useForm, zodResolver } from "@mantine/form";
 import { Send } from "iconsax-react";
 import { z } from "zod";
 
@@ -10,26 +10,26 @@ export const messageValidaor = z.object({
 });
 
 export default function MessageBox({ id }: { id: string }) {
-  const messageInput = useForm({
-    initialValues: {
-      message: "",
-    },
-    validate: zodResolver(messageValidaor),
-  });
+  // const messageInput = useForm({
+  //   initialValues: {
+  //     message: "",
+  //   },
+  //   validate: zodResolver(messageValidaor),
+  // });
 
   const { mutate: sendText } = useSendMessage(id);
 
-  function handleSubmitMessage(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    sendText(messageInput.values);
-    messageInput.reset();
-  }
+  // function handleSubmitMessage(e: React.FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   sendText(messageInput.values);
+  //   messageInput.reset();
+  // }
   return (
     <form
       className="flex items-center justify-between gap-1 mt-4 ml-4 mr-2 absolute left-0 right-0 bottom-2"
-      onSubmit={handleSubmitMessage}
+      // onSubmit={handleSubmitMessage}
     >
-      <div className="flex-grow">
+      {/* <div className="flex-grow">
         <Input
           classNames={{
             input: "!rounded-xl !bg-slate-300 !h-[46px] !border-none",
@@ -37,7 +37,7 @@ export default function MessageBox({ id }: { id: string }) {
           placeholder="Type your message..."
           {...messageInput.getInputProps("message")}
         />
-      </div>
+      </div> */}
       <div className="bg-black p-2 rounded-full">
         <button type="submit">
           <Send color="white" size={16} />

@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
 import { ReactQueryProvider } from "./providers/react-query";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,13 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <ColorSchemeScript />
         <link rel="icon" href="/favico.png" sizes="any" />
       </head>
       <body className={inter.className}>
-        <MantineProvider>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
-        </MantineProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );
