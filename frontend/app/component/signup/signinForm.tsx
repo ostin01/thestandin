@@ -1,10 +1,10 @@
 "use client";
-import { Button, Notification, PasswordInput, TextInput } from "@mantine/core";
 import styles from "@/app/styles/inputstyles.module.css";
 import { z } from "zod";
-import { useForm, zodResolver } from "@mantine/form";
 import { useLogin } from "@/api/hooks/authentication";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const loginFormValidator = z.object({
   email: z.string().email("Enter valid email"),
@@ -18,12 +18,17 @@ export default function SigninForm() {
     successCallbBack: handleSuccess,
     errorCallback: handleError,
   });
-  const loginForm = useForm({
-    initialValues: {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
       email: "",
       password: "",
     },
-    validate: zodResolver(loginFormValidator),
+    resolver: zodResolver(loginFormValidator),
   });
 
   function handleSuccess(message: string) {
@@ -38,45 +43,55 @@ export default function SigninForm() {
     setTimeout(() => setResponseMessage(""), 3000);
   }
 
-  function handleSubmit(values: z.infer<typeof loginFormValidator>) {
+  function onSubmit(values: z.infer<typeof loginFormValidator>) {
     login(values);
   }
 
   return (
-    <form onSubmit={loginForm.onSubmit(handleSubmit)}>
-      <TextInput
-        label="Email"
-        placeholder="Enter your email"
-        withAsterisk
-        size="lg"
-        className="mt-4"
-        classNames={styles}
-        {...loginForm.getInputProps("email")}
-      />
-      <PasswordInput
-        label="Enter your password"
-        withAsterisk
-        size="lg"
-        className="mt-4"
-        placeholder="Password"
-        classNames={styles}
-        {...loginForm.getInputProps("password")}
-      />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col w-full mt-4">
+        <label htmlFor="email" className="text-sm font-semibold">
+          Email
+        </label>
+        <input
+          type="email"
+          id="email"
+          className="border border-gray-300 rounded-lg p-2 mt-2"
+          {...register("email")}
+        />
+      </div>
 
-      <Button type="submit" className={styles.button} mt={20} loading={signin}>
-        Submit
-      </Button>
+      {errors.email && (
+        <span className="text-red-600">{errors.email.message}</span>
+      )}
 
+      <div className="flex flex-col w-full mt-4">
+        <label htmlFor="password" className="text-sm font-semibold">
+          Password
+        </label>
+        <input
+          type="password"
+          id="password"
+          className="border border-gray-300 rounded-lg p-2 mt-2"
+          {...register("password")}
+        />
+      </div>
+
+      {errors.password && (
+        <span className="text-red-600">{errors.password.message}</span>
+      )}
+
+      <div className="flex justify-center mt-4">
+        <button type="submit" className={`${styles.button} text-white`}>
+          {signin ? "Signing in..." : "Sign in"}
+        </button>
+      </div>
       {successMessage && (
-        <Notification color="green" withCloseButton={false}>
-          {successMessage}
-        </Notification>
+        <span className="text-green-600">{successMessage}</span>
       )}
 
       {responseMessage && (
-        <Notification color="red" withCloseButton={false}>
-          {responseMessage}
-        </Notification>
+        <span className="text-red-600">{responseMessage}</span>
       )}
     </form>
   );
