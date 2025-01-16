@@ -9,8 +9,6 @@ import { useSignup } from "@/authentication/authentication";
 
 const registerUserSchema = z
   .object({
-    firstName: z.string().optional(),
-    lastName: z.string().optional(),
     email: z.string().email("Invalid email address"),
     password: z
       .string()
@@ -23,6 +21,11 @@ const registerUserSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
+export type UserDetailsFormValidator = Omit<
+  z.infer<typeof registerUserSchema>,
+  "confirmPassword"
+>;
 
 export default function Signup() {
   const router = useRouter();
@@ -60,12 +63,10 @@ export default function Signup() {
       router.replace("/login");
     }, 2000);
   }
+
   const onSubmit = (data: z.infer<typeof registerUserSchema>) => {
     signup(data);
   };
-
-  // console.log(success);
-  // console.log(errorMessage);
 
   return (
     <SafeAreaView className="flex-1 bg-white">

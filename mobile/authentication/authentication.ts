@@ -1,3 +1,4 @@
+import { UserDetailsFormValidator } from "@/app/signup";
 import { axiosInstance } from "@/lib/api";
 import { saveApiAccessToken } from "@/lib/secure-storage";
 import { ApiResponse } from "@/schema";
@@ -12,16 +13,8 @@ export function useSignup({
   errorCallback: (message: string) => void;
 }) {
   return useMutation({
-    mutationFn: function (payload: {
-      email: string;
-      password: string;
-      confirmPassword: string;
-    }) {
-      return axiosInstance.post("/api/auth/signup", payload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+    mutationFn: function (payload: UserDetailsFormValidator) {
+      return axiosInstance.post("/api/auth/signup", payload);
     },
 
     onSuccess: async function (data: AxiosResponse<ApiResponse<unknown>>) {
