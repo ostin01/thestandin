@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import generateToken from "../middleware/generateToken";
 
 export async function signup(req: Request, res: Response) {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName = "", lastName = "", email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
