@@ -53,7 +53,7 @@ export async function login(req: Request, res: Response) {
       token: generateToken(user._id.toString(), res),
     });
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    res.status(500).json({ message: "Invalid login credentials" });
   }
 }
 
@@ -78,6 +78,34 @@ export async function logoutUser(req: Request, res: Response) {
   try {
     res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+}
+
+export async function updateUserProfile(req: Request, res: Response) {
+  const { firstName, lastName, bio, gender, role, profilePhoto } = req.body;
+  const userId = req.params.id;
+  try {
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (bio) user.bio = bio;
+    if (gender) user.gender = gender;
+    if (role) user.role = role;
+    if (profilePhoto) user.profilePhoto = profilePhoto;
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
   }

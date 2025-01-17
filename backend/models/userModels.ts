@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema(
       require: [true, "please add a password"],
       minLength: 6,
     },
+    bio: { type: String },
+    gender: { type: String },
+    role: { type: String },
+    profilePhoto: { type: String },
   },
   {
     timestamps: true,
