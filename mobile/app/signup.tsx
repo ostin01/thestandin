@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSignup } from "@/authentication/authentication";
+import { useSignup } from "@/api/authentication/authentication";
 
 const registerUserSchema = z
   .object({
@@ -60,7 +60,7 @@ export default function Signup() {
   function handleSuccess() {
     setSuccess(true);
     setTimeout(() => {
-      router.replace("/login");
+      router.replace("/onboarding");
     }, 2000);
   }
 
@@ -135,7 +135,7 @@ export default function Signup() {
           )}
 
           <TouchableOpacity
-            className="max-w-[342px] bg-black mx-auto rounded-lg py-5 px-8 mt-5"
+            className="w-full bg-black mx-auto rounded-lg py-5 px-8 mt-5"
             onPress={handleSubmit(onSubmit)}
           >
             <Text className="text-white text-center">

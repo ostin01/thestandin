@@ -1,11 +1,17 @@
 import { Link, useNavigation, useRouter } from "expo-router";
 import { useLayoutEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLogin } from "@/authentication/authentication";
+import { useLogin } from "@/api/authentication/authentication";
 
 export const loginFormValidator = z.object({
   email: z.string().email("Enter valid email"),
@@ -42,7 +48,7 @@ export default function Login() {
   function handleSuccess(message: string) {
     setSuccessMessage(message);
     setTimeout(() => {
-      router.replace("/");
+      router.replace("/onboarding");
     }, 2000);
   }
 
@@ -104,10 +110,12 @@ export default function Login() {
         )}
 
         <TouchableOpacity
-          className="max-w-[342px] bg-black mx-auto rounded-lg py-5 px-8 mt-5"
+          className="w-full bg-black mx-auto rounded-lg py-5 px-8 mt-5"
           onPress={handleSubmit(onSubmit)}
         >
-          <Text className="text-white text-center">Continue</Text>
+          <Text className="text-white text-center">
+            {signin ? <ActivityIndicator color="white" /> : "Continue"}
+          </Text>
         </TouchableOpacity>
 
         <Text className="text-center mt-4 text-lg">
