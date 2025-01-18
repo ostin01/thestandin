@@ -17,4 +17,5 @@ export type User = {
   email: string;
   bio: string;
   role: string;
+  profilePhoto: string;
 };

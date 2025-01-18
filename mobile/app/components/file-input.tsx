@@ -1,104 +1,55 @@
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import * as DocumentPicker from 'expo-document-picker';
+import { Text, TouchableOpacity, View } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
+import { Image } from "react-native";
 
-interface FileInputFieldProps {
-  handleFile: (file: File | null) => void;
-  file: File | null;
-  error?: boolean;
-  disabled?: boolean;
-  filename?: string;
-  acceptType?: 'image' | 'document' | 'all';
+interface FilePickerProps {
+  setFile: (file: { name: string; type: string; uri: string }) => void;
+  file?: { name: string; type: string; uri: string };
 }
 
-const FileInputField: React.FC<FileInputFieldProps> = ({
-  handleFile,
-  file,
-  error = false,
-  disabled = false,
-  filename = '',
-  acceptType = 'all',
-}) => {
-  const [selectedFile, setSelectedFile] = useState(file);
-
+export default function FilePicker({ setFile, file }: FilePickerProps) {
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type:
-          acceptType === 'image'
-            ? 'image/*'
-            : acceptType === 'document'
-              ? 'application/pdf'
-              : '*/*',
+        type: ["image/*", "application/pdf"],
         copyToCacheDirectory: false,
       });
 
-      if (
-        result.canceled === false &&
-        result.assets &&
-        result.assets.length > 0
-      ) {
-        const asset = result.assets[0];
-        const file = {
-          name: asset.name || 'Unknown file',
-          type: asset.mimeType || 'application/octet-stream',
-          uri: asset.uri,
-        };
-        setSelectedFile(file as unknown as File | null);
-        handleFile(file as unknown as File | null);
+      if (result) {
+        result.assets?.map((res) =>
+          setFile({
+            name: res.name,
+            type: res.mimeType as string,
+            uri: res.uri,
+          })
+        );
       } else {
-        console.log('Document picking canceled');
+        console.log("Document picking canceled");
       }
     } catch (error) {
-      console.error('Error picking document:', error);
+      console.error("Error picking document:", error);
     }
   };
 
   return (
-    <View style={{ marginBottom: 20 }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: 8,
-        }}
-      >
-        {selectedFile ? (
-          <Text style={{ color: 'black', fontSize: 14 }}>
-            {selectedFile.name}
-          </Text>
-        ) : filename ? (
-          <Text style={{ color: '#5DC95D', fontSize: 14 }}>{filename}</Text>
-        ) : (
-          <Text style={{ color: '#A8B8A8', fontSize: 14 }}>
-            Upload a file here
-          </Text>
-        )}
-
-        <TouchableOpacity
+    <TouchableOpacity onPress={pickDocument}>
+      {file?.uri ? (
+        <Image
+          source={{ uri: file?.uri }}
           style={{
-            backgroundColor: '#F6F8F6',
-            paddingVertical: 12,
-            paddingHorizontal: 24,
-            borderRadius: 6,
+            width: 100,
+            height: 100,
+            marginTop: 20,
+            borderRadius: 100,
           }}
-          onPress={pickDocument}
-          disabled={disabled}
-        >
-          <Text style={{ color: '#5DC95D', fontSize: 16, fontWeight: '500' }}>
-            Upload file
+        />
+      ) : (
+        <View className="w-[100] h-[100] rounded-full bg-gray-500 mt-4 relative">
+          <Text className="text-white text-[50px] font-bold absolute right-0 mt-2">
+            +
           </Text>
-        </TouchableOpacity>
-      </View>
-
-      {error && (
-        <Text style={{ color: 'red', fontSize: 12, marginTop: 8 }}>
-          Error uploading file
-        </Text>
+        </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
-};
-
-export default FileInputField;
+}

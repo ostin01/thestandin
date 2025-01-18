@@ -17,6 +17,7 @@ import {
   useGetLoggedInUser,
   useUpdateUserDetails,
 } from "@/api/authentication/authentication";
+import FilePicker from "./components/file-input";
 
 export const userDetailsSchema = z.object({
   firstName: z.string().min(3, "First name is required"),
@@ -24,10 +25,12 @@ export const userDetailsSchema = z.object({
   bio: z.string().min(10, "Your bio must be at least 10 words"),
   role: z.string().min(3, "choose a role"),
   gender: z.string().min(3, "select your gender"),
+  profilePhoto: z.string().optional(),
 });
 
 export default function onboarding() {
   const [successMessage, setSuccessmessage] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState<any>();
   const router = useRouter();
 
   const navigation = useNavigation();
@@ -50,16 +53,17 @@ export default function onboarding() {
       bio: "",
       role: "client" as const,
       gender: "male" as const,
+      profilePhoto: profilePhoto?.uri,
     },
     resolver: zodResolver(userDetailsSchema),
   });
 
   const { data } = useGetLoggedInUser();
-  console.log(data);
-  function handleSuccess(message: string) {
+
+  const handleSuccess = (message: string) => {
     setSuccessmessage(message);
     router.replace("/");
-  }
+  };
 
   const { mutate: updateUser, isPending } = useUpdateUserDetails(
     data?._id as string,
@@ -78,11 +82,7 @@ export default function onboarding() {
           <Text className="text-lg mt-2 text-center mx-[30px]">
             Add a profile photo, name and bio to let people know who you are
           </Text>
-          <View className="w-[100] h-[100] rounded-full bg-gray-500 mt-4 relative">
-            <Text className="text-white text-[50px] font-bold absolute right-0 mt-2">
-              +
-            </Text>
-          </View>
+          <FilePicker setFile={setProfilePhoto} file={profilePhoto} />
         </View>
         <View className="mx-4 mt-4">
           <Text>First Name</Text>
