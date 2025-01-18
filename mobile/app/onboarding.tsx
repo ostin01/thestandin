@@ -1,27 +1,33 @@
 import { useNavigation, useRouter } from "expo-router";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
   TextInput,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from "@react-native-picker/picker";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  useGetLoggedInUser,
+  useUpdateUserDetails,
+} from "@/api/authentication/authentication";
 
 export const userDetailsSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
+  firstName: z.string().min(3, "First name is required"),
+  lastName: z.string().min(3, "Last name is required"),
   bio: z.string().min(10, "Your bio must be at least 10 words"),
   role: z.string().min(3, "choose a role"),
   gender: z.string().min(3, "select your gender"),
 });
 
 export default function onboarding() {
+  const [successMessage, setSuccessmessage] = useState("");
   const router = useRouter();
 
   const navigation = useNavigation();
@@ -33,16 +39,36 @@ export default function onboarding() {
   const roles = ["client", "standin"];
   const gender = ["male", "female"];
 
-  const { control } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      firsName: "",
+      firstName: "",
       lastName: "",
       bio: "",
-      role: roles[0],
-      gender: [0],
+      role: "client" as const,
+      gender: "male" as const,
     },
     resolver: zodResolver(userDetailsSchema),
   });
+
+  const { data } = useGetLoggedInUser();
+  console.log(data);
+  function handleSuccess(message: string) {
+    setSuccessmessage(message);
+    router.replace("/");
+  }
+
+  const { mutate: updateUser, isPending } = useUpdateUserDetails(
+    data?._id as string,
+    handleSuccess
+  );
+
+  const onSubmit = (values: z.infer<typeof userDetailsSchema>) => {
+    updateUser(values);
+  };
 
   return (
     <SafeAreaView className="bg-white flex-1">
@@ -62,7 +88,7 @@ export default function onboarding() {
           <Text>First Name</Text>
 
           <Controller
-            name="firsName"
+            name="firstName"
             control={control}
             render={({ field: { onChange, value } }) => (
               <TextInput
@@ -119,6 +145,9 @@ export default function onboarding() {
               </View>
             )}
           />
+          {errors.gender && (
+            <Text className="text-red-600">{errors?.gender?.message}</Text>
+          )}
           <View>
             <Text className="mt-8 text-lg font-bold">Role</Text>
             <Text>Sign up as a client or a standin</Text>
@@ -140,9 +169,19 @@ export default function onboarding() {
               </View>
             )}
           />
+          {errors.role && (
+            <Text className="text-red-600">{errors?.role?.message}</Text>
+          )}
 
-          <TouchableOpacity className="w-full bg-black mx-auto rounded-lg py-5 px-8 my-5">
-            <Text className="text-white text-center">Submit</Text>
+          <TouchableOpacity
+            className="w-full bg-black mx-auto rounded-lg py-5 px-8 my-5"
+            onPress={handleSubmit(onSubmit)}
+          >
+            {isPending ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <Text className="text-white text-center">Submit</Text>
+            )}
           </TouchableOpacity>
         </View>
       </ScrollView>

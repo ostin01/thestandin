@@ -1,8 +1,8 @@
 import { UserDetailsFormValidator } from "@/app/signup";
 import { axiosInstance } from "@/lib/api";
-import { saveApiAccessToken } from "@/lib/secure-storage";
-import { ApiResponse } from "@/schema";
-import { useMutation } from "@tanstack/react-query";
+import { getApiAccessToken, saveApiAccessToken } from "@/lib/secure-storage";
+import { ApiResponse, User } from "@/schema";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 
 export function useSignup({
@@ -50,6 +50,43 @@ export function useLogin({
     },
     onError: function ({ response }: AxiosError<ApiResponse<unknown>>) {
       errorCallback(response?.data.message as string);
+    },
+  });
+}
+
+export function useGetLoggedInUser() {
+  return useQuery({
+    queryKey: ["loggedInUser"],
+    queryFn: async (): Promise<User> => {
+      const authToken = await getApiAccessToken();
+      const response = await axiosInstance.get("/api/auth/getme", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      return response?.data;
+    },
+  });
+}
+
+export function useUpdateUserDetails(
+  id: string,
+  successHandler: (message: string) => void
+) {
+  return useMutation({
+    mutationFn: async (payload: any) => {
+      const authToken = await getApiAccessToken();
+      return axiosInstance.put(`/api/auth/update-profile/${id}`, payload, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+    },
+    onSuccess: (data: AxiosResponse<ApiResponse<unknown>>) => {
+      successHandler(data.data.message);
+    },
+    onError: ({ response }: AxiosError<ApiResponse<unknown>>) => {
+      console.log(response?.data.message);
     },
   });
 }

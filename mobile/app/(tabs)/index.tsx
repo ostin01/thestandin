@@ -11,6 +11,7 @@ export default function HomeScreen() {
       <Link href="/login" className=" text-center">
         Login page
       </Link>
+      <Link href="/onboarding">Onboarding</Link>
     </View>
   );
 }

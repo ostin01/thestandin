@@ -7,20 +7,19 @@ export const saveApiAccessToken = async (token: string): Promise<void> => {
     await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
     console.log("Token saved securely");
   } catch (error) {
-    console.error("Error saving token:", error);
+    console.error("Error saving token", error);
   }
 };
 
 export const getApiAccessToken = async (): Promise<string | null> => {
   try {
-    // Retrieve the token from SecureStore
-    const token = await SecureStore.getItemAsync("ACCESS_TOKEN");
+    const token = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
     if (token) {
       console.log("Token retrieved securely");
-      return token; // Return the token
+      return token;
     } else {
       console.log("No token found");
-      return null; // No token found in SecureStore
+      return null;
     }
   } catch (error) {
     console.error("Error retrieving token", error);
@@ -30,27 +29,9 @@ export const getApiAccessToken = async (): Promise<string | null> => {
 
 export const deleteApiAccessToken = async (): Promise<void> => {
   try {
-    // Remove the token from SecureStore
-    await SecureStore.deleteItemAsync("ACCESS_TOKEN");
+    await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
     console.log("Token deleted securely");
   } catch (error) {
     console.error("Error deleting token", error);
   }
 };
-
-/**
- * Example usage of saving, retrieving, and deleting the token
- */
-// const exampleUsage = async () => {
-//   // Save a token
-//   await saveToken('your-access-token-here');
-
-//   // Retrieve the token
-//   const token = await getToken();
-//   console.log('Retrieved Token:', token);
-
-//   // Delete the token
-//   await deleteToken();
-// };
-
-// exampleUsage();
