@@ -12,6 +12,7 @@ export default function HomeScreen() {
         Login page
       </Link>
       <Link href="/onboarding">Onboarding</Link>
+      <Link href="/standins">Standins</Link>
     </View>
   );
 }

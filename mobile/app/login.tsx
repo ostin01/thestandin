@@ -48,7 +48,7 @@ export default function Login() {
   function handleSuccess(message: string) {
     setSuccessMessage(message);
     setTimeout(() => {
-      router.replace("/onboarding");
+      router.replace("/standins");
     }, 2000);
   }
 

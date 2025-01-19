@@ -5,13 +5,13 @@ import { ApiResponse, User } from "@/schema";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 
-export function useSignup({
+export const useSignup = ({
   successCallbBack,
   errorCallback,
 }: {
   successCallbBack: () => void;
   errorCallback: (message: string) => void;
-}) {
+}) => {
   return useMutation({
     mutationFn: function (payload: UserDetailsFormValidator) {
       return axiosInstance.post("/api/auth/signup", payload);
@@ -22,23 +22,20 @@ export function useSignup({
       await saveApiAccessToken(accessToken);
       successCallbBack();
     },
-    onError: function (
-      { response }: AxiosError<ApiResponse<unknown>>,
-      payload
-    ) {
+    onError: function ({ response }: AxiosError<ApiResponse<unknown>>) {
       console.log(response?.data);
       errorCallback(response?.data.message as string);
     },
   });
-}
+};
 
-export function useLogin({
+export const useLogin = ({
   successCallbBack,
   errorCallback,
 }: {
   successCallbBack: (message: string) => void;
   errorCallback: (message: string) => void;
-}) {
+}) => {
   return useMutation({
     mutationFn: function (payload: { email: string; password: string }) {
       return axiosInstance.post("/api/auth/login", payload);
@@ -52,9 +49,9 @@ export function useLogin({
       errorCallback(response?.data.message as string);
     },
   });
-}
+};
 
-export function useGetLoggedInUser() {
+export const useGetLoggedInUser = () => {
   return useQuery({
     queryKey: ["loggedInUser"],
     queryFn: async (): Promise<User> => {
@@ -67,12 +64,12 @@ export function useGetLoggedInUser() {
       return response?.data;
     },
   });
-}
+};
 
-export function useUpdateUserDetails(
+export const useUpdateUserDetails = (
   id: string,
   successHandler: (message: string) => void
-) {
+) => {
   return useMutation({
     mutationFn: async (payload: any) => {
       const authToken = await getApiAccessToken();
@@ -89,4 +86,19 @@ export function useUpdateUserDetails(
       console.log(response?.data.message);
     },
   });
-}
+};
+
+export const useGetAllUsers = () => {
+  return useQuery({
+    queryKey: ["get-all-users"],
+    queryFn: async () => {
+      const authToken = await getApiAccessToken();
+      const response = await axiosInstance.get("/api/users", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      return response?.data;
+    },
+  });
+};

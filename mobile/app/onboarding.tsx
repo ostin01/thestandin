@@ -62,7 +62,7 @@ export default function onboarding() {
 
   const handleSuccess = (message: string) => {
     setSuccessmessage(message);
-    router.replace("/");
+    router.replace("/standins");
   };
 
   const { mutate: updateUser, isPending } = useUpdateUserDetails(
