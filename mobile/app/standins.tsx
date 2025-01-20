@@ -25,7 +25,6 @@ export default function standins() {
         pathname: "/standin/[id]",
         params: { id: item._id },
       }}
-      key={item._id}
       className="px-4 mt-6"
     >
       <View className="mx-4 flex-row justify-between items-center mt-[30px]">
@@ -33,11 +32,10 @@ export default function standins() {
           <View className="w-[60px] h-[60px] rounded-full bg-green-500"></View>
         ) : (
           <Image
-            source={{ uri: item.profilePhoto }}
+            source={{ uri: item?.profilePhoto }}
             style={{
               width: 60,
               height: 60,
-              // marginTop: 20,
               borderRadius: 100,
             }}
           />
@@ -45,7 +43,9 @@ export default function standins() {
 
         <View className="flex-1 ml-4">
           <Text className="font-bold text-lg">{`${item.firstName} ${item.lastName}`}</Text>
-          <Text>{item.bio}</Text>
+          <Text className="text-ellipsis" style={{ width: 300 }}>
+            {item.bio}
+          </Text>
         </View>
       </View>
     </Link>
@@ -64,19 +64,10 @@ export default function standins() {
       ) : (
         <FlatList
           data={data}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           renderItem={renderItem}
         />
       )}
-
-      {/* <Link
-        href={{
-          pathname: "/standin/[id]",
-          params: { id: "i" },
-        }}
-      >
-        View user details
-      </Link> */}
     </SafeAreaView>
   );
 }
