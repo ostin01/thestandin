@@ -1,4 +1,10 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { Link, useNavigation, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -6,6 +12,7 @@ import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignup } from "@/api/authentication/authentication";
+import Notification from "./components/notification";
 
 const registerUserSchema = z
   .object({
@@ -30,11 +37,8 @@ export type UserDetailsFormValidator = Omit<
 export default function Signup() {
   const router = useRouter();
   const navigation = useNavigation();
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  function handleError(message: string) {
-    setErrorMessage(message);
-  }
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -57,11 +61,20 @@ export default function Signup() {
     successCallbBack: handleSuccess,
     errorCallback: handleError,
   });
-  function handleSuccess() {
-    setSuccess(true);
+  function handleSuccess(message: string) {
+    setSuccess(message);
+
     setTimeout(() => {
+      setSuccess("");
       router.replace("/onboarding");
     }, 2000);
+  }
+
+  function handleError(message: string) {
+    setErrorMessage(message);
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 3000);
   }
 
   const onSubmit = (data: z.infer<typeof registerUserSchema>) => {
@@ -93,8 +106,8 @@ export default function Signup() {
             )}
           />
 
-          {errors.email && (
-            <Text className="text-red-500">{errors.email.message}</Text>
+          {errors?.email && (
+            <Text className="text-red-500">{errors?.email?.message}</Text>
           )}
 
           <Text className="mt-4">Password</Text>
@@ -111,8 +124,8 @@ export default function Signup() {
             )}
           />
 
-          {errors.password && (
-            <Text className="text-red-500">{errors.password.message}</Text>
+          {errors?.password && (
+            <Text className="text-red-500">{errors?.password?.message}</Text>
           )}
 
           <Text className="mt-4">Confirm Password</Text>
@@ -139,7 +152,7 @@ export default function Signup() {
             onPress={handleSubmit(onSubmit)}
           >
             <Text className="text-white text-center">
-              {signupLoading ? "Loading..." : "Continue"}
+              {signupLoading ? <ActivityIndicator color="white" /> : "Continue"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -150,6 +163,8 @@ export default function Signup() {
             sign in
           </Link>
         </Text>
+        {success && <Notification text={success} type="success" />}
+        {errorMessage && <Notification text={errorMessage} type="error" />}
       </View>
     </SafeAreaView>
   );

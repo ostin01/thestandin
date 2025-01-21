@@ -9,7 +9,7 @@ export const useSignup = ({
   successCallbBack,
   errorCallback,
 }: {
-  successCallbBack: () => void;
+  successCallbBack: (message: string) => void;
   errorCallback: (message: string) => void;
 }) => {
   return useMutation({
@@ -20,11 +20,10 @@ export const useSignup = ({
     onSuccess: async function (data: AxiosResponse<ApiResponse<unknown>>) {
       const accessToken = data.data.token;
       await saveApiAccessToken(accessToken);
-      successCallbBack();
+      successCallbBack(data?.data?.message);
     },
     onError: function ({ response }: AxiosError<ApiResponse<unknown>>) {
-      console.log(response?.data);
-      errorCallback(response?.data.message as string);
+      errorCallback(response?.data.error as string);
     },
   });
 };
