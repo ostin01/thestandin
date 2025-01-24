@@ -53,13 +53,14 @@ export default function onboarding() {
       bio: "",
       role: "client" as const,
       gender: "male" as const,
-      profilePhoto: profilePhoto,
+      profilePhoto: profilePhoto?.uri,
     },
     resolver: zodResolver(userDetailsSchema),
   });
 
-  const { data } = useGetLoggedInUser();
   console.log(profilePhoto);
+
+  const { data } = useGetLoggedInUser();
 
   const handleSuccess = (message: string) => {
     setSuccessmessage(message);
@@ -72,6 +73,14 @@ export default function onboarding() {
   );
 
   const onSubmit = (values: z.infer<typeof userDetailsSchema>) => {
+    const fd = new FormData();
+
+    fd.append("firstName", values.firstName);
+    fd.append("lastName", values.lastName);
+    fd.append("bio", values.bio);
+    fd.append("role", values.role);
+    fd.append("gender", values.gender);
+    fd.append("profilePhoto", profilePhoto as File);
     updateUser(values);
   };
 

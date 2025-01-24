@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
 import { Image } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 interface FilePickerProps {
   setFile: (file: { name: string; type: string; uri: string }) => void;
@@ -10,24 +10,26 @@ interface FilePickerProps {
 export default function FilePicker({ setFile, file }: FilePickerProps) {
   const pickDocument = async () => {
     try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: ["image/*", "application/pdf"],
-        copyToCacheDirectory: false,
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+        // base64: true,
       });
+      console.log(result);
 
       if (result) {
         result.assets?.map((res) =>
           setFile({
-            name: res.name,
+            name: res.fileName,
             type: res.mimeType as string,
             uri: res.uri,
           })
         );
-      } else {
-        console.log("Document picking canceled");
       }
     } catch (error) {
-      console.error("Error picking document:", error);
+      console.error("Error picking image:", error);
     }
   };
 

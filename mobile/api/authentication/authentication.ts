@@ -75,6 +75,7 @@ export const useUpdateUserDetails = (
       return axiosInstance.put(`/api/auth/update-profile/${id}`, payload, {
         headers: {
           Authorization: `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data",
         },
       });
     },

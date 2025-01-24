@@ -99,13 +99,13 @@ export async function updateUserProfile(req: Request, res: Response) {
     let profilePhotoUrl = user.profilePhoto; // Preserve existing photo if not updated
 
     if (profilePhoto) {
-      const buffer = Buffer.from(profilePhoto, "base64"); // Assuming base64-encoded image
+      // const buffer = Buffer.from(profilePhoto, "base64"); // Assuming base64-encoded image
       const fileName = `profile_photos/${userId}_${Date.now()}.jpg`;
       const bucket = storage.bucket(); // Access default bucket
 
       // Upload file to Firebase Storage
       const file = bucket.file(fileName);
-      await file.save(buffer, {
+      await file.save(profilePhoto, {
         metadata: {
           contentType: "image/jpeg", // Adjust based on your image type
         },
