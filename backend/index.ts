@@ -20,6 +20,15 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 
+const admin = require("firebase-admin");
+
+const serviceAccount = require("./serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: "standin-b4d56.appspot.com",
+});
+
 connectDB();
 
 server.listen(PORT, () => {

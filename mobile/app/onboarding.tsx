@@ -53,12 +53,13 @@ export default function onboarding() {
       bio: "",
       role: "client" as const,
       gender: "male" as const,
-      profilePhoto: profilePhoto?.uri,
+      profilePhoto: profilePhoto,
     },
     resolver: zodResolver(userDetailsSchema),
   });
 
   const { data } = useGetLoggedInUser();
+  console.log(profilePhoto);
 
   const handleSuccess = (message: string) => {
     setSuccessmessage(message);
