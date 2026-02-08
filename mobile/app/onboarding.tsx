@@ -22,10 +22,9 @@ import FilePicker from "./components/file-input";
 export const userDetailsSchema = z.object({
   firstName: z.string().min(3, "First name is required"),
   lastName: z.string().min(3, "Last name is required"),
-  bio: z.string().min(10, "Your bio must be at least 10 words"),
+  bio: z.string().min(2, "Your bio must be at least 10 words"),
   role: z.string().min(3, "choose a role"),
   gender: z.string().min(3, "select your gender"),
-  profilePhoto: z.string().optional(),
 });
 
 export default function onboarding() {
@@ -53,12 +52,9 @@ export default function onboarding() {
       bio: "",
       role: "client" as const,
       gender: "male" as const,
-      profilePhoto: profilePhoto?.uri,
     },
     resolver: zodResolver(userDetailsSchema),
   });
-
-  console.log(profilePhoto);
 
   const { data } = useGetLoggedInUser();
 
@@ -81,6 +77,7 @@ export default function onboarding() {
     fd.append("role", values.role);
     fd.append("gender", values.gender);
     fd.append("profilePhoto", profilePhoto as File);
+    console.log(values);
     updateUser(values);
   };
 

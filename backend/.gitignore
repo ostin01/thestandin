@@ -1,38 +1,59 @@
-lib-cov
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-*.swp
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
 
-pids
-logs
-results
-tmp
+# =========================
+# Virtual Environments
+# =========================
+venv/
+env/
+.venv/
 
-# Build
-public/css/main.css
+# =========================
+# Flask
+# =========================
+instance/
+.webassets-cache
 
-# Coverage reports
-coverage
-
-# API keys and secrets
+# =========================
+# Environment variables
+# =========================
 .env
+.env.local
 
-# Dependency directory
-node_modules
-bower_components
+# =========================
+# Logs
+# =========================
+*.log
 
-# Editors
-.idea
-*.iml
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# OS metadata
+# =========================
+# OS files
+# =========================
 .DS_Store
 Thumbs.db
 
-# ignore yarn.lock
-yarn.lock
+# =========================
+# Testing / Coverage
+# =========================
+.coverage
+htmlcov/
+.pytest_cache/
+
+# =========================
+# Build / Distribution
+# =========================
+build/
+dist/
+*.egg-info/

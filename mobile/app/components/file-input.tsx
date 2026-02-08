@@ -17,7 +17,6 @@ export default function FilePicker({ setFile, file }: FilePickerProps) {
         quality: 1,
         // base64: true,
       });
-      console.log(result);
 
       if (result) {
         result.assets?.map((res) =>

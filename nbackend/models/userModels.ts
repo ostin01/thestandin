@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     bio: { type: String },
     gender: { type: String },
     role: { type: String },
-    profilePhoto: { type: String },
+    profilePhoto: { type: Object },
   },
   {
     timestamps: true,

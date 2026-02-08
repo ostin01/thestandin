@@ -72,6 +72,7 @@ export const useUpdateUserDetails = (
   return useMutation({
     mutationFn: async (payload: any) => {
       const authToken = await getApiAccessToken();
+      console.log(payload);
       return axiosInstance.put(`/api/auth/update-profile/${id}`, payload, {
         headers: {
           Authorization: `Bearer ${authToken}`,
